@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v7"
 	"github.com/jinzhu/gorm"
 	handler "github.com/taufiqade/gowallet/handler"
 	"github.com/taufiqade/gowallet/models"
@@ -30,6 +31,7 @@ var transactionService models.ITransactionService
 
 var dbConn *gorm.DB
 var dbOnce sync.Once
+var redisConn *redis.Client
 
 func initDB() {
 	dbOnce.Do(func() {
@@ -47,7 +49,16 @@ func initDB() {
 		}
 		dbConn = db
 
-		// defer db.Close()
+		// init redis conn
+		dsn := fmt.Sprintf("%s:%d", os.Getenv("REDIS_HOST"), 6379)
+		fmt.Print(dsn)
+		redisConn = redis.NewClient(&redis.Options{
+			Addr: dsn, //redis port
+		})
+		_, errr := redisConn.Ping().Result()
+		if errr != nil {
+			log.Fatal(err)
+		}
 	})
 }
 
