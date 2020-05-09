@@ -1,27 +1,31 @@
 package service
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"os"
-	dbEntity "github.com/taufiqade/gowallet/models"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	dbEntity "github.com/taufiqade/gowallet/models"
 )
 
-type authService struct {
-	userRepo 		dbEntity.IUserRepository
+// AuthService godoc
+type AuthService struct {
+	userRepo dbEntity.IUserRepository
 }
 
-func NewAuthService(u dbEntity.IUserRepository) *authService {
-	return &authService{
+// NewAuthService initialize new auth service
+func NewAuthService(u dbEntity.IUserRepository) *AuthService {
+	return &AuthService{
 		userRepo: u,
 	}
 }
 
-func (u *authService) Login(email string, password string) (string, error) {
+// Login godoc
+func (u *AuthService) Login(email string, password string) (string, error) {
 	var err error
 	//Creating Access Token
 	os.Setenv("ACCESS_SECRET", "test123") //this should be in an env file
-	user, err:= u.userRepo.GetUserByEmail(email)
+	user, err := u.userRepo.GetUserByEmail(email)
 	if err != nil {
 		return "user not found", err
 	}

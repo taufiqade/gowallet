@@ -2,12 +2,14 @@ package helper
 
 import (
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
 
+// HashString godoc
 func HashString(payload string) string {
 	str, err := bcrypt.GenerateFromPassword([]byte(payload), bcrypt.MinCost)
 	if err == nil {
@@ -17,6 +19,7 @@ func HashString(payload string) string {
 	return string(str)
 }
 
+// CompareHash godoc
 func CompareHash(plainText string, chipperText string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(plainText), []byte(chipperText))
 	return err == nil
@@ -24,16 +27,18 @@ func CompareHash(plainText string, chipperText string) bool {
 
 var jwtKey = []byte("miniwallet")
 
+// Claim godoc
 type Claim struct {
-	UserID	int	`json:"user_id"`
-	UserType	string	`json:"user_type"`
+	UserID   int    `json:"user_id"`
+	UserType string `json:"user_type"`
 	jwt.StandardClaims
 }
 
-func CreateToken(userId int, userType string) (string, error) {
+// CreateToken godoc
+func CreateToken(userID int, userType string) (string, error) {
 	claim := &Claim{
-		UserID:         userId,
-		UserType:       userType,
+		UserID:   userID,
+		UserType: userType,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(60 * time.Minute).Unix(),
 		},
@@ -42,6 +47,7 @@ func CreateToken(userId int, userType string) (string, error) {
 	return token.SignedString(jwtKey)
 }
 
+// VerifyToken godoc
 func VerifyToken(tokenString string) (Claim, int, error) {
 	claims := &Claim{}
 	var status = 0

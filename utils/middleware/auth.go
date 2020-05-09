@@ -3,11 +3,13 @@ package middleware
 import (
 	"fmt"
 	"strconv"
+
 	"github.com/taufiqade/gowallet/utils/helper"
 
 	"github.com/gin-gonic/gin"
 )
 
+// JWTAuthMidlewareAdmin godoc
 func (m *DefaultMiddleware) JWTAuthMidlewareAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fmt.Println("admin route")
@@ -35,6 +37,7 @@ func (m *DefaultMiddleware) JWTAuthMidlewareAdmin() gin.HandlerFunc {
 	}
 }
 
+// JWTAuthMidlewareGuest godoc
 func (m *DefaultMiddleware) JWTAuthMidlewareGuest() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fmt.Println("guest route")

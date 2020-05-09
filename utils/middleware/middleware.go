@@ -1,3 +1,4 @@
 package middleware
 
-type DefaultMiddleware struct {}
+// DefaultMiddleware godoc
+type DefaultMiddleware struct{}

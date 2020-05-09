@@ -5,22 +5,26 @@ import (
 	"github.com/taufiqade/gowallet/models"
 )
 
+// UserBalanceRepository godoc
 type UserBalanceRepository struct {
 	DB *gorm.DB
 }
 
+// NewUserBalanceRepository godoc
 func NewUserBalanceRepository(db *gorm.DB) models.IUserBalanceRepository {
 	return &UserBalanceRepository{DB: db}
 }
 
-func (repo *UserBalanceRepository) GetByUserID(userId int) (models.UserBalance, error) {
+// GetByUserID godoc
+func (repo *UserBalanceRepository) GetByUserID(userID int) (models.UserBalance, error) {
 	var ub models.UserBalance
-	query := repo.DB.Table("user_balance").Where("user_id=?", userId).First(&ub)
+	query := repo.DB.Table("user_balance").Where("user_id=?", userID).First(&ub)
 	return ub, query.Error
 }
 
-func (repo *UserBalanceRepository) Update(userId int, data *models.UserBalance) error {
+// Update godoc
+func (repo *UserBalanceRepository) Update(userID int, data *models.UserBalance) error {
 	//var ub models.UserBalance
-	query := repo.DB.Table("user_balance").Where("user_id=?",userId).Updates(data)
+	query := repo.DB.Table("user_balance").Where("user_id=?", userID).Updates(data)
 	return query.Error
 }

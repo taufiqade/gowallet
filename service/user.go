@@ -5,17 +5,20 @@ import (
 	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 )
 
-type userService struct {
-	userRepo 		dbEntity.IUserRepository
+// UserService struct
+type UserService struct {
+	userRepo dbEntity.IUserRepository
 }
 
-func NewUserService(u dbEntity.IUserRepository) *userService {
-	return &userService{
+// NewUserService initialize new user service
+func NewUserService(u dbEntity.IUserRepository) *UserService {
+	return &UserService{
 		userRepo: u,
 	}
 }
 
-func (u *userService) GetUserByID(id int) (dbEntity.Users, error) {
+// GetUserByID godoc
+func (u *UserService) GetUserByID(id int) (dbEntity.Users, error) {
 	user, err := u.userRepo.GetUserByID(id)
 	if err != nil {
 		return dbEntity.Users{}, err
@@ -23,7 +26,8 @@ func (u *userService) GetUserByID(id int) (dbEntity.Users, error) {
 	return user, err
 }
 
-func (u *userService) Create(data *httpRequest.UserRequest) (dbEntity.Users, error) {
+// Create godoc
+func (u *UserService) Create(data *httpRequest.UserRequest) (dbEntity.Users, error) {
 	user, err := u.userRepo.Create(data)
 	if err != nil {
 		return dbEntity.Users{}, err

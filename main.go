@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log"
+
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/joho/godotenv"
-	"log"
 )
 
 func main() {

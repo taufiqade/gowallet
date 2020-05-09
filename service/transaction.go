@@ -5,48 +5,51 @@ import (
 	"github.com/taufiqade/gowallet/models/http/request"
 )
 
-type transactionService struct {
-	userRepo 			dbEntity.IUserRepository
-	userBalanceRepo 	dbEntity.IUserBalanceRepository
-	historyRepo			dbEntity.IUserBalanceHistoryRepository
+// TransactionService godoc
+type TransactionService struct {
+	userRepo        dbEntity.IUserRepository
+	userBalanceRepo dbEntity.IUserBalanceRepository
+	historyRepo     dbEntity.IUserBalanceHistoryRepository
 }
 
-func NewTransactionService(u dbEntity.IUserRepository, ub dbEntity.IUserBalanceRepository, uh dbEntity.IUserBalanceHistoryRepository) *transactionService {
-	return &transactionService{
-		userRepo: u,
+// NewTransactionService initialize new transaction service
+func NewTransactionService(u dbEntity.IUserRepository, ub dbEntity.IUserBalanceRepository, uh dbEntity.IUserBalanceHistoryRepository) *TransactionService {
+	return &TransactionService{
+		userRepo:        u,
 		userBalanceRepo: ub,
-		historyRepo: uh,
+		historyRepo:     uh,
 	}
 }
 
-func (u *transactionService) TopUp(userId int, payload *request.TopUpRequest) error {
-	beneficiary, err:= u.userBalanceRepo.GetByUserID(userId)
+// TopUp godoc
+func (u *TransactionService) TopUp(userID int, payload *request.TopUpRequest) error {
+	beneficiary, err := u.userBalanceRepo.GetByUserID(userID)
 	if err != nil {
 		return err
 	}
 	currBalance := beneficiary.Balance
 	// update balanceData
-	balanceData:= &dbEntity.UserBalance{
-		ID:              	beneficiary.ID,
-		UserID:          	beneficiary.UserID,
-		Balance:         	beneficiary.Balance + float64(payload.Amount),
-		BalanceAchieve: 	beneficiary.BalanceAchieve + float64(payload.Amount),
+	balanceData := &dbEntity.UserBalance{
+		ID:             beneficiary.ID,
+		UserID:         beneficiary.UserID,
+		Balance:        beneficiary.Balance + float64(payload.Amount),
+		BalanceAchieve: beneficiary.BalanceAchieve + float64(payload.Amount),
 	}
-	ubErr := u.userBalanceRepo.Update(userId, balanceData)
+	ubErr := u.userBalanceRepo.Update(userID, balanceData)
 	if ubErr != nil {
 		return ubErr
 	}
 	//insert balance history
-	balanceHistory:= &dbEntity.UserBalanceHistory{
-		UserBalanceID: 	beneficiary.ID,
-		BalanceBefore: 	currBalance,
-		BalanceAfter: 	balanceData.BalanceAchieve,
-		Activity:      	"TopUp",
-		Type:  			"debit",
-		IP:            	payload.IP,
-		UserAgent:     	payload.UserAgent,
-		Location: 		payload.Location,
-		Author: 		payload.Author,
+	balanceHistory := &dbEntity.UserBalanceHistory{
+		UserBalanceID: beneficiary.ID,
+		BalanceBefore: currBalance,
+		BalanceAfter:  balanceData.BalanceAchieve,
+		Activity:      "TopUp",
+		Type:          "debit",
+		IP:            payload.IP,
+		UserAgent:     payload.UserAgent,
+		Location:      payload.Location,
+		Author:        payload.Author,
 	}
 	bhErr := u.historyRepo.Create(balanceHistory)
 	if bhErr != nil {
