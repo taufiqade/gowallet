@@ -3,7 +3,7 @@ package middleware
 import (
 	"fmt"
 	"strconv"
-	"test/utils/helper"
+	"github.com/taufiqade/gowallet/utils/helper"
 
 	"github.com/gin-gonic/gin"
 )

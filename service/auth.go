@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/dgrijalva/jwt-go"
 	"os"
-	dbEntity "test/models"
+	dbEntity "github.com/taufiqade/gowallet/models"
 	"time"
 )
 

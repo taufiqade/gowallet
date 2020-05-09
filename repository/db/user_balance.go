@@ -2,7 +2,7 @@ package db
 
 import (
 	"github.com/jinzhu/gorm"
-	"test/models"
+	"github.com/taufiqade/gowallet/models"
 )
 
 type UserBalanceRepository struct {

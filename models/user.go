@@ -1,7 +1,7 @@
 package models
 
 import (
-	httpRequest "test/models/http/request"
+	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 	"time"
 )
 

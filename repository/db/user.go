@@ -2,8 +2,8 @@ package db
 
 import (
 	"github.com/jinzhu/gorm"
-	"test/models"
-	httpRequest "test/models/http/request"
+	"github.com/taufiqade/gowallet/models"
+	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 	"time"
 )
 

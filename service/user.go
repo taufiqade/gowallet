@@ -1,8 +1,8 @@
 package service
 
 import (
-	dbEntity "test/models"
-	httpRequest "test/models/http/request"
+	dbEntity "github.com/taufiqade/gowallet/models"
+	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 )
 
 type userService struct {

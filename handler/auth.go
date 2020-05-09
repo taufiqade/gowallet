@@ -1,16 +1,16 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"test/models"
-	httpRequest "test/models/http/request"
+
+	"github.com/gin-gonic/gin"
+	"github.com/taufiqade/gowallet/models"
+	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 )
 
 type AuthHandler struct {
 	authServ models.IAuthService
 }
-
 
 func NewAuthHandler(r *gin.Engine, a models.IAuthService) {
 	handler := &AuthHandler{authServ: a}

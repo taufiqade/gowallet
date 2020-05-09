@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-	"test/models"
-	httpRequest "test/models/http/request"
+	"github.com/taufiqade/gowallet/models"
+	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 )
 
 type UserHandler struct {

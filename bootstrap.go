@@ -2,30 +2,31 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"log"
 	"os"
 	"sync"
-	handler "test/handler"
-	"test/models"
-	repository "test/repository/db"
-	service "test/service"
+
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+	handler "github.com/taufiqade/gowallet/handler"
+	"github.com/taufiqade/gowallet/models"
+	repository "github.com/taufiqade/gowallet/repository/db"
+	service "github.com/taufiqade/gowallet/service"
 )
 
 /////////////////INIT REPOSITORY/////////////////////
 var dbUserRepository models.IUserRepository
 var dbUserBalanceRepository models.IUserBalanceRepository
 var dbUserBalanceHistoryRepository models.IUserBalanceHistoryRepository
+
 /////////////END OF INIT REPOSITORY//////////////////
 
 //////////////////INIT SERVICE//////////////////////
 var authService models.IAuthService
 var userService models.IUserService
 var transactionService models.ITransactionService
+
 ///////////////END OF INIT SERVICE//////////////////
-
-
 
 var dbConn *gorm.DB
 var dbOnce sync.Once
@@ -46,7 +47,7 @@ func initDB() {
 		}
 		dbConn = db
 
-		defer db.Close()
+		// defer db.Close()
 	})
 }
 

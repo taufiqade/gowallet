@@ -3,8 +3,8 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"test/models"
-	httpRequest "test/models/http/request"
+	"github.com/taufiqade/gowallet/models"
+	httpRequest "github.com/taufiqade/gowallet/models/http/request"
 )
 
 type TransactionHandler struct {

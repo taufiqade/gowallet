@@ -1,6 +1,6 @@
 package models
 
-import "test/models/http/request"
+import "github.com/taufiqade/gowallet/models/http/request"
 
 // transaction service contract
 type ITransactionService interface {
