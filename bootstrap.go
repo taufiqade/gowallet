@@ -13,7 +13,7 @@ import (
 	"github.com/taufiqade/gowallet/models"
 	dbRepo "github.com/taufiqade/gowallet/repository/db"
 
-	// redisRepo "github.com/taufiqade/gowallet/repository/redis"
+	redisRepo "github.com/taufiqade/gowallet/repository/redis"
 	service "github.com/taufiqade/gowallet/service"
 )
 
@@ -22,7 +22,7 @@ var dbUserRepository models.IUserRepository
 var dbUserBalanceRepository models.IUserBalanceRepository
 var dbUserBalanceHistoryRepository models.IUserBalanceHistoryRepository
 
-// var redisAuthRepository models.IRedisAuthRepository
+var redisAuthRepository models.IRedisAuthRepository
 
 /////////////END OF INIT REPOSITORY//////////////////
 
@@ -55,7 +55,6 @@ func initDB() {
 
 		// init redis conn
 		dsn := fmt.Sprintf("%s:%d", os.Getenv("REDIS_HOST"), 6379)
-		fmt.Print(dsn)
 		redisConn = redis.NewClient(&redis.Options{
 			Addr: dsn, //redis port
 		})
@@ -70,11 +69,11 @@ func initRepository() {
 	dbUserRepository = dbRepo.NewUserRepository(dbConn)
 	dbUserBalanceRepository = dbRepo.NewUserBalanceRepository(dbConn)
 	dbUserBalanceHistoryRepository = dbRepo.NewUserBalanceHistoryRepository(dbConn)
-	// redisAuthRepository = redisRepo.NewRedisAuthRepository(redisConn)
+	redisAuthRepository = redisRepo.NewRedisAuthRepository(redisConn)
 }
 
 func initService() {
-	authService = service.NewAuthService(dbUserRepository)
+	authService = service.NewAuthService(dbUserRepository, redisAuthRepository)
 	userService = service.NewUserService(dbUserRepository)
 	transactionService = service.NewTransactionService(dbUserRepository, dbUserBalanceRepository, dbUserBalanceHistoryRepository)
 }

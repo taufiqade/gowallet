@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -28,9 +29,11 @@ func (m *DefaultMiddleware) JWTAuthMidlewareAdmin() gin.HandlerFunc {
 			c.AbortWithStatus(400)
 		} else if claim.Type != "admin" {
 			c.AbortWithStatus(401)
+		} else {
+			c.Request.Header.Set("Wallet-Uid", strconv.Itoa(claim.UserID))
+			c.Request.Header.Set("Wallet-Utype", claim.Type)
+			c.Next()
 		}
-
-		c.Next()
 	}
 }
 
@@ -44,7 +47,7 @@ func (m *DefaultMiddleware) JWTAuthMidlewareGuest() gin.HandlerFunc {
 			return
 		}
 		token := strings.Split(authHeader[0], " ")[1]
-		_, status, err := helper.VerifyToken(token)
+		claim, status, err := helper.VerifyToken(token)
 		if err != nil {
 			fmt.Println(err)
 			c.AbortWithStatus(401)
@@ -57,8 +60,10 @@ func (m *DefaultMiddleware) JWTAuthMidlewareGuest() gin.HandlerFunc {
 		} else if status == 2 {
 			c.AbortWithStatus(400)
 			return
+		} else {
+			c.Request.Header.Set("Wallet-Uid", strconv.Itoa(claim.UserID))
+			c.Request.Header.Set("Wallet-Utype", claim.Type)
+			c.Next()
 		}
-
-		c.Next()
 	}
 }

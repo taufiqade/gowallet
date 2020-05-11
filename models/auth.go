@@ -20,3 +20,9 @@ type AccessDetails struct {
 type IAuthService interface {
 	CreateToken(email string, password string) (string, error)
 }
+
+// IRedisAuthRepository godoc
+type IRedisAuthRepository interface {
+	Get(key string) (string, error)
+	Set(key, value string, exp int64) (err error)
+}

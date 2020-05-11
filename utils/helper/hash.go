@@ -3,7 +3,6 @@ package helper
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
@@ -35,12 +34,12 @@ type Claim struct {
 }
 
 // CreateToken godoc
-func CreateToken(userID int, Type string) (string, error) {
+func CreateToken(userID int, Type string, exp int64) (string, error) {
 	claim := &Claim{
 		UserID: userID,
 		Type:   Type,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(60 * time.Minute).Unix(),
+			ExpiresAt: exp,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
@@ -67,6 +66,11 @@ func VerifyToken(tokenString string) (Claim, int, error) {
 		// unauthorized
 		fmt.Println("token invalid")
 		status = 1
+	}
+
+	_, err = Get(tokenString)
+	if err != nil {
+		fmt.Println("redis token not found/expired")
 	}
 	return *claims, status, err
 }
