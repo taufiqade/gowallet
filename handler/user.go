@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/taufiqade/gowallet/models"
 	httpRequest "github.com/taufiqade/gowallet/models/http/request"
+	authMiddleware "github.com/taufiqade/gowallet/utils/middleware"
 )
 
 // UserHandler godoc
@@ -16,13 +17,25 @@ type UserHandler struct {
 
 // NewUserHandler godoc
 func NewUserHandler(r *gin.Engine, u models.IUserService) {
+
 	handler := &UserHandler{userServ: u}
-	r.GET("/user/:id", handler.GetUserByID)
-	r.POST("/user", handler.Create)
+
+	userGroup := r.Group("user")
+	midleware := authMiddleware.DefaultMiddleware{}
+
+	userGroup.Use(midleware.JWTAuthMidlewareAdmin())
+	{
+		userGroup.GET(":id", handler.GetUserByID)
+		userGroup.POST("", handler.Create)
+	}
+
+	// r.GET("/user/:id", midleware.JWTAuthMiddleware, handler.GetUserByID)
+	// r.POST("/user", handler.Create)
 }
 
 // GetUserByID godoc
 func (u *UserHandler) GetUserByID(c *gin.Context) {
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if nil != err {
 		c.JSON(http.StatusBadRequest, gin.H{

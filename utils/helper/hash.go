@@ -10,9 +10,9 @@ import (
 )
 
 // HashString godoc
-func HashString(payload string) string {
-	str, err := bcrypt.GenerateFromPassword([]byte(payload), bcrypt.MinCost)
-	if err == nil {
+func HashString(password string) string {
+	str, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	if err != nil {
 		log.Println(err)
 		return ""
 	}
@@ -29,16 +29,16 @@ var jwtKey = []byte("miniwallet")
 
 // Claim godoc
 type Claim struct {
-	UserID   int    `json:"user_id"`
-	UserType string `json:"user_type"`
+	UserID int    `json:"user_id"`
+	Type   string `json:"type"`
 	jwt.StandardClaims
 }
 
 // CreateToken godoc
-func CreateToken(userID int, userType string) (string, error) {
+func CreateToken(userID int, Type string) (string, error) {
 	claim := &Claim{
-		UserID:   userID,
-		UserType: userType,
+		UserID: userID,
+		Type:   Type,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(60 * time.Minute).Unix(),
 		},

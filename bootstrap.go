@@ -11,7 +11,9 @@ import (
 	"github.com/jinzhu/gorm"
 	handler "github.com/taufiqade/gowallet/handler"
 	"github.com/taufiqade/gowallet/models"
-	repository "github.com/taufiqade/gowallet/repository/db"
+	dbRepo "github.com/taufiqade/gowallet/repository/db"
+
+	// redisRepo "github.com/taufiqade/gowallet/repository/redis"
 	service "github.com/taufiqade/gowallet/service"
 )
 
@@ -19,6 +21,8 @@ import (
 var dbUserRepository models.IUserRepository
 var dbUserBalanceRepository models.IUserBalanceRepository
 var dbUserBalanceHistoryRepository models.IUserBalanceHistoryRepository
+
+// var redisAuthRepository models.IRedisAuthRepository
 
 /////////////END OF INIT REPOSITORY//////////////////
 
@@ -63,9 +67,10 @@ func initDB() {
 }
 
 func initRepository() {
-	dbUserRepository = repository.NewUserRepository(dbConn)
-	dbUserBalanceRepository = repository.NewUserBalanceRepository(dbConn)
-	dbUserBalanceHistoryRepository = repository.NewUserBalanceHistoryRepository(dbConn)
+	dbUserRepository = dbRepo.NewUserRepository(dbConn)
+	dbUserBalanceRepository = dbRepo.NewUserBalanceRepository(dbConn)
+	dbUserBalanceHistoryRepository = dbRepo.NewUserBalanceHistoryRepository(dbConn)
+	// redisAuthRepository = redisRepo.NewRedisAuthRepository(redisConn)
 }
 
 func initService() {

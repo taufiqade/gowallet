@@ -10,7 +10,13 @@ type TokenDetails struct {
 	RtExpires    int64
 }
 
+// AccessDetails godoc
+type AccessDetails struct {
+	AccessUUID string
+	UserID     uint64
+}
+
 // IAuthService is transaction service contract
 type IAuthService interface {
-	Login(email string, password string) (string, error)
+	CreateToken(email string, password string) (string, error)
 }

@@ -2,11 +2,10 @@ package middleware
 
 import (
 	"fmt"
-	"strconv"
-
-	"github.com/taufiqade/gowallet/utils/helper"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/taufiqade/gowallet/utils/helper"
 )
 
 // JWTAuthMidlewareAdmin godoc
@@ -17,7 +16,7 @@ func (m *DefaultMiddleware) JWTAuthMidlewareAdmin() gin.HandlerFunc {
 		if len(authHeader) == 0 {
 			c.AbortWithStatus(403)
 		}
-		token := authHeader[0]
+		token := strings.Split(authHeader[0], " ")[1]
 		claim, status, err := helper.VerifyToken(token)
 		if err != nil {
 			fmt.Println(err)
@@ -27,13 +26,11 @@ func (m *DefaultMiddleware) JWTAuthMidlewareAdmin() gin.HandlerFunc {
 			c.AbortWithStatus(401)
 		} else if status == 2 {
 			c.AbortWithStatus(400)
-		} else if claim.UserType != "admin" {
+		} else if claim.Type != "admin" {
 			c.AbortWithStatus(401)
-		} else {
-			c.Request.Header.Set("Wallet-Uid", strconv.Itoa(claim.UserID))
-			c.Request.Header.Set("Wallet-Utype", claim.UserType)
-			c.Next()
 		}
+
+		c.Next()
 	}
 }
 
@@ -46,23 +43,22 @@ func (m *DefaultMiddleware) JWTAuthMidlewareGuest() gin.HandlerFunc {
 			c.AbortWithStatus(403)
 			return
 		}
-		token := authHeader[0]
-		claim, status, err := helper.VerifyToken(token)
+		token := strings.Split(authHeader[0], " ")[1]
+		_, status, err := helper.VerifyToken(token)
 		if err != nil {
 			fmt.Println(err)
 			c.AbortWithStatus(401)
 			return
 		}
 		if status == 1 {
+			fmt.Println("status")
 			c.AbortWithStatus(401)
 			return
 		} else if status == 2 {
 			c.AbortWithStatus(400)
 			return
-		} else {
-			c.Request.Header.Set("Wallet-Uid", strconv.Itoa(claim.UserID))
-			c.Request.Header.Set("Wallet-Utype", claim.UserType)
-			c.Next()
 		}
+
+		c.Next()
 	}
 }

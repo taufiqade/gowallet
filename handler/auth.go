@@ -26,10 +26,11 @@ func (a *AuthHandler) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	res, err := a.authServ.Login(payload.Email, payload.Password)
+
+	res, err := a.authServ.CreateToken(payload.Email, payload.Password)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return
 	}
-	c.JSON(http.StatusCreated, res)
+	c.JSON(http.StatusOK, res)
 }
