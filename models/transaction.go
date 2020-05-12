@@ -4,6 +4,6 @@ import "github.com/taufiqade/gowallet/models/http/request"
 
 // ITransactionService represent transaction service contract
 type ITransactionService interface {
-	TopUp(beneficiaryID int, payload *request.TopUpRequest) error
-	//Transfer(obligorID int, beneficiaryID int, ip string, agent string, payload string) error
+	TopUp(email string, payload *request.TransactionRequest) error
+	Transfer(obligorID int, beneficiary string, payload *request.TransactionRequest) error
 }
