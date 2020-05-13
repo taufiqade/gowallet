@@ -28,3 +28,9 @@ func (repo *UserBalanceRepository) Update(userID int, data *models.UserBalance) 
 	query := repo.DB.Table("user_balance").Where("user_id=?", userID).Updates(data)
 	return query.Error
 }
+
+// Create godoc
+func (repo *UserBalanceRepository) Create(data *models.UserBalance, tx *gorm.DB) error {
+	query := tx.Table("user_balance").Create(data)
+	return query.Error
+}

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -31,6 +32,10 @@ func NewTransactionHandler(r *gin.Engine, u models.ITransactionService) {
 // TopUp godoc
 func (t *TransactionHandler) TopUp(c *gin.Context) {
 	payload := httpRequest.TransactionRequest{}
+	payload.IP = c.ClientIP()
+	userAgent := c.Request.Header.Get("User-Agent")
+	agent, _ := json.Marshal(userAgent)
+	payload.UserAgent = string(agent)
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Bad Request",
@@ -47,6 +52,10 @@ func (t *TransactionHandler) TopUp(c *gin.Context) {
 // Transfer godoc
 func (t *TransactionHandler) Transfer(c *gin.Context) {
 	payload := httpRequest.TransactionRequest{}
+	payload.IP = c.ClientIP()
+	userAgent := c.Request.Header.Get("User-Agent")
+	agent, _ := json.Marshal(userAgent)
+	payload.UserAgent = string(agent)
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Bad Request",

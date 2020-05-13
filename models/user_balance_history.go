@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 // UserBalanceHistory struct
 type UserBalanceHistory struct {
@@ -21,5 +25,5 @@ type UserBalanceHistory struct {
 // IUserBalanceHistoryRepository interface
 type IUserBalanceHistoryRepository interface {
 	GetBalanceID(id int) (UserBalanceHistory, error)
-	Create(data *UserBalanceHistory) error
+	Create(data *UserBalanceHistory, tx *gorm.DB) error
 }

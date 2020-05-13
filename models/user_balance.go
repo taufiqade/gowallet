@@ -1,5 +1,7 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 // UserBalance struct
 type UserBalance struct {
 	ID             uint    `gorm:"primary_key" json:"id"`
@@ -12,4 +14,5 @@ type UserBalance struct {
 type IUserBalanceRepository interface {
 	GetByUserID(userID int) (UserBalance, error)
 	Update(userID int, data *UserBalance) error
+	Create(data *UserBalance, tx *gorm.DB) error
 }

@@ -75,7 +75,7 @@ func initRepository() {
 func initService() {
 	authService = service.NewAuthService(dbUserRepository, redisAuthRepository)
 	userService = service.NewUserService(dbUserRepository)
-	transactionService = service.NewTransactionService(dbUserRepository, dbUserBalanceRepository, dbUserBalanceHistoryRepository)
+	transactionService = service.NewTransactionService(dbUserRepository, dbUserBalanceRepository, dbUserBalanceHistoryRepository, dbConn)
 }
 
 func serveHTTP() {

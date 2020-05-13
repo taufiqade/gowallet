@@ -23,7 +23,7 @@ func (repo *UserBalanceHistoryRepository) GetBalanceID(id int) (models.UserBalan
 }
 
 // Create godoc
-func (repo *UserBalanceHistoryRepository) Create(data *models.UserBalanceHistory) error {
-	query := repo.DB.Table("user_balance_history").Create(data)
+func (repo *UserBalanceHistoryRepository) Create(data *models.UserBalanceHistory, tx *gorm.DB) error {
+	query := tx.Table("user_balance_history").Create(data)
 	return query.Error
 }
