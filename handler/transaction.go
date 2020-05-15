@@ -46,7 +46,7 @@ func (t *TransactionHandler) TopUp(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
-	c.JSON(http.StatusCreated, err)
+	c.JSON(http.StatusCreated, "TopUp successfully executed")
 }
 
 // Transfer godoc
@@ -62,9 +62,9 @@ func (t *TransactionHandler) Transfer(c *gin.Context) {
 		})
 	}
 
-	userID, err := strconv.Atoi(c.Request.Header["Wallet-Uid"][0])
+	userID, _ := strconv.Atoi(c.Request.Header["Wallet-Uid"][0])
 	if err := t.transactionServ.Transfer(userID, payload.Email, &payload); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
-	c.JSON(http.StatusCreated, err)
+	c.JSON(http.StatusCreated, "transfer successfully executed")
 }
