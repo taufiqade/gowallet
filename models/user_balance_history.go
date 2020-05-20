@@ -11,7 +11,7 @@ type UserBalanceHistory struct {
 	ID            uint       `gorm:"primary_key" json:"id"`
 	UserBalanceID uint       `gorm:"column:user_balance_id" json:"user_balance_id"`
 	BalanceBefore float64    `gorm:"column:balance_before" gorm:"type:decimal(10,2)" json:"balance_before"`
-	BalanceAfter  float64    `gorm:"column:balance_after" gorm:"type:decimal(10,2)"json:"balance_after"`
+	BalanceAfter  float64    `gorm:"column:balance_after" gorm:"type:decimal(10,2)" json:"balance_after"`
 	Activity      string     `gorm:"column:activity" json:"activity"`
 	Type          string     `gorm:"column:type" json:"type"`
 	Location      string     `gorm:"column:location" json:"location"`
